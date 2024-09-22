@@ -95,4 +95,5 @@ simulated_data <- simulated_data %>%
 simulated_data <- simulated_data %>%
   select(year_month, season, everything())
 
-simulated_data
+# Write csv
+write_csv(simulated_data, "data/analysis_data/simulated_data.csv")
