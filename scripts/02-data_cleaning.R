@@ -1,5 +1,5 @@
 #### Preamble ####
-# Purpose: Cleans the raw data
+# Purpose: Cleans the raw data.
 # Author: Haowei Fan
 # Date: 22 September 2024
 # Contact: haowei.fan@mail.utoronto.ca
@@ -17,19 +17,22 @@ cleaned_data <-
   raw_data |>
   janitor::clean_names() |> # format column names
   select(-x_id, -transgender_non_binary_two_spirit) |> # delete unless columns
-  mutate(month_numeric = match(month, month.abb),  # Convert month abbreviation to numeric
+  mutate(month_numeric = sprintf("%02d", match(month, month.abb)),  # Convert month abbreviation to numeric
          year_month = paste(year, month_numeric, sep = "-")) %>% # New column contains year and month in the format XXXX_XX
   select(-year, -month) |>   # Keep only the new 'year_month' column
   mutate(season = case_when(
-    month_numeric %in% c(3, 4, 5) ~ "Spring", # match months to actual season
-    month_numeric %in% c(6, 7, 8) ~ "Summer",
-    month_numeric %in% c(9, 10, 11) ~ "Autumn",
-    month_numeric %in% c(12, 1, 2 ) ~ "Winter"
+    month_numeric %in% c("03", "04", "05") ~ "Spring", # match months to actual season
+    month_numeric %in% c("06", "07", "08") ~ "Summer",
+    month_numeric %in% c("09", "10", "11") ~ "Autumn",
+    month_numeric %in% c("12", "01", "02") ~ "Winter"
   )) |>
   select(-month_numeric) |> # delete unless columns
   select(year_month, season, everything()) |> # rearranging columns into a readable format.
   filter(ym(year_month) >= ym("2007-03") & ym(year_month) <= ym("2024-02")) |> # delete unwanted rows.
-  tidyr::drop_na() # drop rows contains empty unit.
+  tidyr::drop_na() |> # drop rows contains empty unit.
+  # As we don't count minor sexual group, we minus the number of minor-sexual decedents form total decedents.
+  mutate(total_decedents = ifelse(total_decedents != (male + female), male + female, total_decedents)) 
+
   
 cleaned_data
 #### Save data ####
