@@ -1,13 +1,11 @@
 ---
-title: "My title"
-subtitle: "My subtitle if needed"
+title: "Rising Trends in Shelter Resident Deaths in Toronto Over the Past 17 Years"
 author: 
-  - First author
-  - Another author
-thanks: "Code and data are available at: LINK."
+  - Haowei Fan
+thanks: "Data are available at: https://open.toronto.ca/dataset/deaths-of-shelter-residents/"
 date: today
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "Shelter resident deaths are an important indicator of social stability, reflecting systemic issues such as welfare systems, housing crises, and healthcare access. This project analyzed monthly shelter resident deaths in the Toronto region from March 2007 to August 2024, focusing on trends over time and seasonal variations. The study found that deaths have been increasing, with a significant rise between 2020 and 2023. While the number of deaths remained similar in spring, summer, and fall, winter months saw a significantly higher number of fatalities. These findings provide valuable data to support targeted interventions by governments and welfare organizations to address changing needs throughout the year."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -17,202 +15,214 @@ bibliography: references.bib
 #| include: false
 #| warning: false
 #| message: false
-
+#| echo: false
 library(tidyverse)
-library(palmerpenguins)
+library(knitr)
+analysis_data <- read_csv("/Users/fhw0912/Desktop/Deaths-of-Shelter-Residents-in-Toronto/data/analysis_data/analysis_data.csv")
 ```
 
 
 # Introduction
 
-You can and should cross-reference sections and sub-sections. We use @citeR and @rohan.
-
-The remainder of this paper is structured as follows. @sec-data....
-
+In 2023, as the COVID-19 pandemic receded, the Toronto government announced plans to phase out the shelter hotels that had been providing temporary accommodations for homeless individuals. By the end of 2024, 24 shelter hotels will no longer be available due to expiring contracts, exacerbating an already overcrowded shelter system. The loss of these temporary accommodations poses significant risks not only to the safety and stability of the community but also to the well-being of those who rely on shelters for survival. The influx of new shelter residents may potentially lead to a decline in living conditions, including sanitation issues and territorial conflicts. This highlights the urgent need to understand the trends and underlying factors affecting shelter residents, especially in terms of their mortality numbers.
+While many sociological studies have explored the growing number of shelter residents, fewer have examined shelter resident mortality rates in detail. Given the challenges of accurately counting the transient and often untracked shelter population, studying actual death counts offers a more reliable and feasible method of understanding the impact of systemic issues. Mortality data, being both concrete and verifiable, can better inform policy decisions than estimates of shelter population numbers, which are often difficult to obtain and track.
+This paper focuses on analyzing the number of deaths among shelter residents in Toronto from March 2007 to August 2024. The aim is to identify both long-term trends and seasonal variations in shelter resident deaths. Using simple linear regression, this study estimates the rate at which the number of deaths has increased over time. It also examines anomalies in the data by comparing yearly death rates, and assesses seasonal differences by analyzing average death rates across the four seasons. This analysis provides valuable insights into the hardships faced by shelter residents, especially during specific times of the year.
+This study finds three key trends: 1) the number of deaths among shelter residents has been rising over time; 2) there was a noticeable increase in deaths between 2020 and 2023; and 3) while deaths during spring, summer, and fall remained relatively consistent, winter saw significantly higher mortality rates. Understanding these trends is critical because shelter resident deaths serve as a key indicator of broader social problems, such as gaps in welfare systems, housing shortages, and insufficient healthcare services. These findings provide essential data for governments and welfare organizations to develop more targeted interventions based on the needs of shelter residents throughout the year.
+The remainder of this paper is structured as follows: Section 2 discusses the data sources used in this project and details the data cleaning process, followed by a visualization of the dataset's key distribution and statistics. Section 3 outlines the statistical methods used and presents the findings in detail. Section 4 addresses the limitations of the study and offers suggestions for future research.
 
 
 # Data {#sec-data}
 
-Some of our data is of penguins (@fig-bills), from @palmerpenguins.
+## Raw Data
+
+The dataset I am using is titled "Deaths of Shelter Residents", sourced from OpenToronto. This dataset records the number of deaths among shelter residents in the Toronto area, starting from January 2007 on a monthly basis. It also includes the gender of the deceased, categorized into three sections: male, female, and other gender, which includes Transgender, Non-binary, and Two-Spirit. The dataset is continuously updated. Table 1 contains descriptions of these variables.
 
 ```{r}
-#| label: fig-bills
-#| fig-cap: Bills of penguins
-#| echo: false
-
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = "none") +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
-```
-
-Talk more about it.
-
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
-
-```{r}
-#| label: fig-planes
-#| fig-cap: Relationship between wing length and width
-#| echo: false
 #| warning: false
 #| message: false
-
-analysis_data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
-
-analysis_data |> 
-  ggplot(aes(x = width, y = length)) +
-  geom_point(alpha = 0.8) +
-  theme_minimal() +
-  labs(x = "Wing width (mm)",
-       y = "Wing length (mm)")
-```
-
-Talk way more about it. 
-
-
-
-# Model
-
-The goal of our modelling strategy is twofold. Firstly,...
-
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
-
-## Model set-up
-
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
-
-\begin{align} 
-y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_i + \gamma_i\\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
-\gamma &\sim \mbox{Normal}(0, 2.5) \\
-\sigma &\sim \mbox{Exponential}(1)
-\end{align}
-
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
-
-
-### Model justification
-
-We expect a positive relationship between the size of the wings and time spent aloft. In particular...
-
-We can use maths by including latex between dollar signs, for instance $\theta$.
-
-
-# Results
-
-Our results are summarized in @tbl-modelresults.
-
-```{r}
 #| echo: false
-#| eval: true
-#| warning: false
-#| message: false
+#| label: Column descriptions of the original data
+#| tbl-cap: "Column descriptions of the original data"
 
-library(rstanarm)
-
-first_model <-
-  readRDS(file = here::here("models/first_model.rds"))
-```
-
-```{r}
-#| echo: false
-#| eval: true
-#| label: tbl-modelresults
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
-#| warning: false
-
-modelsummary::modelsummary(
-  list(
-    "First model" = first_model
-  ),
-  statistic = "mad",
-  fmt = 2
+column_description <- tibble(
+  Column = c("_id", "Year", "Month", "Total decedents", "Male", "Female", "Transgender/Non-binary/Two-Spirit"),
+  Description = c(
+    "Unique row identifier for Open Data database.",
+    "The calendar year being reported on.",
+    "The month being reported on.",
+    "The total number of shelter residents who died in the reported month/year.",
+    "The total number of male shelter residents who died in the reported month/year.",
+    "The total number of female shelter residents who died in the reported month/year.",
+    "The total number of transgender, non-binary, and Two-Spirit shelter residents who died in the reported month/year."
+  )
 )
+
+kable(column_description, col.names = c("Column", "Description"))
 ```
 
 
+
+In addition to this dataset, OpenToronto also offers a similar dataset called "Deaths of People Experiencing Homelessness", which includes four variables: id, year, month, and number of deaths. However, I chose not to use this dataset due to its limited data coverage, spanning only from May 2007 to August 2023. In comparison, the "Deaths of Shelter Residents" dataset provides more extensive data, allowing for greater accuracy and a narrower confidence interval in the results.
+
+
+## Data Cleaning
+
+In the data cleaning process, the following steps were conducted using Rcode(@citeR), along with the packages pandas, tidyverse, ggplot2, and dplyr:
+
+Combining Year and Month: The variables for year and month were merged, and the month was converted to a numerical format to facilitate time series analysis.
+Creating a New Variable for Seasons: A new variable was created to categorize each month into one of the four seasons: March, April, and May were classified as spring; June, July, and August as summer; September, October, and November as autumn; and December, January, and February as winter. This was done to enable seasonal analysis.
+Removing Unnecessary Variables: All variables unrelated to this project, such as id and the three gender categories, were removed to simplify the dataset.
+Ensuring Equal Seasonal Data: To ensure that each season had the same length of time for comparison, I removed some samples from the beginning and end of the dataset, so that the total number of samples became a multiple of four, with each season covering the same period.
+Handling Missing Data: After inspecting all the samples, I confirmed that there were no missing values, so no further treatment for missing data was necessary.
+After the cleaning process, the dataset was reduced to three variables: Time, Total Deaths, and Season, as shown in Table 2.
+
+
+```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| #| label: Sample of the cleaned data
+#| tbl-cap: "Sample of the cleaned data"
+kable(head(analysis_data))
+```
+
+## Statistical summary of the cleaned data
+Table 3 provides some basic statistics about the dataset. The project spans a total of 204 months. During this period, the highest number of deaths recorded in a single month was 19, while the lowest was 0. The average number of deaths per month is 3.848.
+```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| label: Basic statistics of the cleaned data
+#| tbl-cap: "Basic statistics of the cleaned data"
+kable(summary(analysis_data[, c("year_month", "total_decedents")]))
+```
+
+Figure 1 illustrates the variation in the number of deaths per month over time. It is clear that the trend is upward, indicating an increase in the number of deaths over the observed period.
+
+```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| label: Total Decedents Over time
+#| fig-cap: "Total Decedents Over time"
+
+# Line plot for total_decedents over time
+ggplot(analysis_data, aes(x = as.Date(paste(year_month, "-01", sep="")), y = total_decedents)) +
+  geom_line() +
+  labs(title = "Total Decedents Over Time", x = "Date", y = "Total Decedents") +
+  theme_minimal()
+```
+
+# Result
+
+Figure 2 presents the fitted results of a simple linear regression model. The blue line represents the predicted data, while the points indicate the actual observed data. It is evident that the number of deaths shows a clear upward trend. The slope of the line suggests that the death count is increasing at an approximate rate of 1.009105 per week.
+
+
+
+```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| include: false
+# 将 year_month 转换为日期格式，假设 year_month 是 YYYY-MM 格式的字符型
+analysis_data$year_month_date <- as.Date(paste0(analysis_data$year_month, "-01"))
+
+# 设置起始日期为 2007-01-01
+start_date <- as.Date("2007-01-01")
+
+# 计算每个日期与起始日期之间的时间差（以天为单位）
+analysis_data$days_since_start <- as.numeric(difftime(analysis_data$year_month_date, start_date, units = "weeks"))
+
+# 使用计算出的时间差进行回归分析
+m <- lm(total_decedents ~ days_since_start, data = analysis_data)
+```
+
+```{r, results='hide'}
+#| warning: false
+#| message: false
+#| echo: false
+#| label: Simple linear regression
+#| fig-cap: "Simple linear regression"
+
+
+ggplot(analysis_data, aes(x = ym(year_month), y = total_decedents)) +
+  geom_point() +  # 绘制数据点
+  geom_line(aes(y = fitted(m)), col = "blue", size = 1)
+  labs(title = "Total Decedents vs Year/Month",
+       x = "Time",
+       y = "Total Decedents")
+```
+Figure 3 displays the total number of deaths per year, along with their respective proportions. It is important to note that I removed the data for 2007 and 2024 because they do not represent complete years. From the chart, it is evident that the number of deaths between 2020 and 2023 was significantly higher, with each of these years accounting for over 10% of the total deaths during the 15-year period. The peak occurred in 2021, reaching as high as 17.8%.
+
+```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| label: Total Decedents per Year
+#| fig-cap: "Total Decedents per Year"
+
+# 将 year_month 转换为年份
+analysis_data$year <- substr(analysis_data$year_month, 1, 4)
+
+# 按年份汇总总死亡人数
+yearly_deaths <- aggregate(total_decedents ~ year, data = analysis_data, sum)
+
+
+
+
+filtered_data <- yearly_deaths[!(yearly_deaths$year %in% c(2007, 2024)), ]
+
+# 计算每年的总死亡人数占比（百分比）
+filtered_data$total_decedents_pct <- filtered_data$total_decedents / sum(filtered_data$total_decedents) * 100
+
+# 绘制带有百分比标签的柱状图
+ggplot(filtered_data, aes(x = year, y = total_decedents)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  geom_text(aes(label = paste0(round(total_decedents_pct, 1), "%")), 
+            vjust = -0.5, size = 3) +  # 添加百分比标签
+  labs(title = "Total Decedents per Year", x = "Year", y = "Total Decedents") +
+  theme_minimal()
+
+```
+
+
+Additionally, Figure 4 shows the average number of deaths per season over the past few years. The proportions for spring, autumn, and summer are relatively similar, ranging between 23.6% and 23.8%. However, winter stands out with a significantly higher proportion, reaching 29%, notably surpassing the other three seasons.
+
+```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| label: Average Decedents by Season
+#| fig-cap: "Average Decedents by Season"
+
+seasonal_data <- analysis_data %>%
+  group_by(season) %>%
+  summarize(mean_decedents = mean(total_decedents),
+            total_decedents = sum(total_decedents))
+
+# 计算每个季节的百分比
+seasonal_data$total_decedents_pct <- seasonal_data$total_decedents / sum(seasonal_data$total_decedents) * 100
+
+# 绘制带有百分比的柱状图
+ggplot(seasonal_data, aes(x = season, y = mean_decedents, fill = season)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = paste0(round(total_decedents_pct, 1), "%")), 
+            vjust = -0.5, size = 3) +  # 添加百分比标签
+  labs(title = "Average Decedents by Season", 
+       x = "Season", 
+       y = "Average Decedents") +
+  theme_minimal()
+```
 
 
 # Discussion
-
-## First discussion point {#sec-first-point}
-
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
-
-## Second discussion point
-
-## Third discussion point
-
-## Weaknesses and next steps
-
-Weaknesses and next steps should also be included.
-
 \newpage
+
+
 
 \appendix
 
 # Appendix {-}
-
-
-# Additional data details
-
-# Model details {#sec-model-details}
-
-## Posterior predictive check
-
-In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
-
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
-
-```{r}
-#| eval: true
-#| echo: false
-#| message: false
-#| warning: false
-#| label: fig-ppcheckandposteriorvsprior
-#| layout-ncol: 2
-#| fig-cap: "Examining how the model fits, and is affected by, the data"
-#| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
-
-pp_check(first_model) +
-  theme_classic() +
-  theme(legend.position = "bottom")
-
-posterior_vs_prior(first_model) +
-  theme_minimal() +
-  scale_color_brewer(palette = "Set1") +
-  theme(legend.position = "bottom") +
-  coord_flip()
-```
-
-## Diagnostics
-
-@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
-
-@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
-
-```{r}
-#| echo: false
-#| eval: true
-#| message: false
-#| warning: false
-#| label: fig-stanareyouokay
-#| fig-cap: "Checking the convergence of the MCMC algorithm"
-#| fig-subcap: ["Trace plot", "Rhat plot"]
-#| layout-ncol: 2
-
-plot(first_model, "trace")
-
-plot(first_model, "rhat")
-```
-
-
-
 \newpage
 
 
