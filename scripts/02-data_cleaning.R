@@ -30,8 +30,6 @@ cleaned_data <-
   select(year_month, season, everything()) |> # rearranging columns into a readable format.
   filter(ym(year_month) >= ym("2007-03") & ym(year_month) <= ym("2024-02")) |> # delete unwanted rows.
   tidyr::drop_na() |> # drop rows contains empty unit.
-  # As we don't count minor sexual group, we minus the number of minor-sexual decedents form total decedents.
-  mutate(total_decedents = ifelse(total_decedents != (male + female), male + female, total_decedents)) 
 
   
 cleaned_data
