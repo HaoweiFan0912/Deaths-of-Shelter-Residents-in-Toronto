@@ -29,36 +29,12 @@ seasons <- rep(c("spring", "summer", "autumn", "winter"))
 # I assume the number of decedents follows poisson distribution with mean of 8.
 total_decedents <- rpois(length(years)*12, 8)
 
-# Define a function that computes half of the element.
-# If the result is a fraction, randomly round up or down.
-half_with_random_rounding <- function(x) {
-  half_value <- x / 2
-  if (half_value %% 1 != 0) {
-    # If it's a fraction, randomly round up or down
-    return(sample(c(floor(half_value), ceiling(half_value)), 1))
-  } else {
-    # If it's an integer, return as is
-    return(half_value)
-  }
-}
-
-# Use sapply to apply the half_with_random_rounding function to each element of 
-# total_decedents, this new list is the number of total male decedents.
-# This is depend on the assumption that number of male shelter residents is 
-# equal to the number of female shelter residents.
-male <- sapply(total_decedents, half_with_random_rounding)
-
-# Number of female decedents = Total decedents - Number of male decedents.
-female <- total_decedents - male
-
 # Begin to simulate data
 simulated_data <-
   tibble(
     year = rep(years, each = 12),
     month = rep(months, times = length(years)),
-    total_decedents = total_decedents,
-    male = male,
-    female = female
+    total_decedents = total_decedents
   )
 
 # Add another column to the data called season. 
