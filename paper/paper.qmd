@@ -2,7 +2,6 @@
 title: "Rising Trends in Shelter Resident Deaths in Toronto Over the Past 17 Years"
 author: 
   - Haowei Fan
-thanks: "Data are available at: https://open.toronto.ca/dataset/deaths-of-shelter-residents/"
 date: today
 date-format: long
 abstract: "Shelter resident deaths are an important indicator of social stability, reflecting systemic issues such as welfare systems, housing crises, and healthcare access. This project analyzed monthly shelter resident deaths in the Toronto region from March 2007 to August 2024, focusing on trends over time and seasonal variations. The study found that deaths have been increasing, with a significant rise between 2020 and 2023. While the number of deaths remained similar in spring, summer, and fall, winter months saw a significantly higher number of fatalities. These findings provide valuable data to support targeted interventions by governments and welfare organizations to address changing needs throughout the year."
@@ -24,24 +23,27 @@ analysis_data <- read_csv("/Users/fhw0912/Desktop/Deaths-of-Shelter-Residents-in
 
 # Introduction
 
-In 2023, as the COVID-19 pandemic receded, the Toronto government announced plans to phase out the shelter hotels that had been providing temporary accommodations for homeless individuals. By the end of 2024, 24 shelter hotels will no longer be available due to expiring contracts, exacerbating an already overcrowded shelter system. The loss of these temporary accommodations poses significant risks not only to the safety and stability of the community but also to the well-being of those who rely on shelters for survival. The influx of new shelter residents may potentially lead to a decline in living conditions, including sanitation issues and territorial conflicts. This highlights the urgent need to understand the trends and underlying factors affecting shelter residents, especially in terms of their mortality numbers.
-While many sociological studies have explored the growing number of shelter residents, fewer have examined shelter resident mortality rates in detail. Given the challenges of accurately counting the transient and often untracked shelter population, studying actual death counts offers a more reliable and feasible method of understanding the impact of systemic issues. Mortality data, being both concrete and verifiable, can better inform policy decisions than estimates of shelter population numbers, which are often difficult to obtain and track.
-This paper focuses on analyzing the number of deaths among shelter residents in Toronto from March 2007 to August 2024. The aim is to identify both long-term trends and seasonal variations in shelter resident deaths. Using simple linear regression, this study estimates the rate at which the number of deaths has increased over time. It also examines anomalies in the data by comparing yearly death rates, and assesses seasonal differences by analyzing average death rates across the four seasons. This analysis provides valuable insights into the hardships faced by shelter residents, especially during specific times of the year.
-This study finds three key trends: 1) the number of deaths among shelter residents has been rising over time; 2) there was a noticeable increase in deaths between 2020 and 2023; and 3) while deaths during spring, summer, and fall remained relatively consistent, winter saw significantly higher mortality rates. Understanding these trends is critical because shelter resident deaths serve as a key indicator of broader social problems, such as gaps in welfare systems, housing shortages, and insufficient healthcare services. These findings provide essential data for governments and welfare organizations to develop more targeted interventions based on the needs of shelter residents throughout the year.
-The remainder of this paper is structured as follows: Section 2 discusses the data sources used in this project and details the data cleaning process, followed by a visualization of the dataset's key distribution and statistics. Section 3 outlines the statistical methods used and presents the findings in detail. Section 4 addresses the limitations of the study and offers suggestions for future research.
+In 2023, as the COVID-19 pandemic receded, the Toronto government announced plans to phase out the shelter hotels that had been providing temporary accommodations for homeless individuals (@NoHotel). By the end of 2024, 24 shelter hotels will no longer be available due to expiring contracts, exacerbating an already overcrowded shelter system (@NoHotel). The loss of these temporary accommodations poses significant risks not only to the safety and stability of the community but also to the well-being of those who rely on shelters for survival. The influx of new shelter residents may potentially lead to a decline in living conditions, including sanitation issues and territorial conflicts. This highlights the urgent need to understand the trends and underlying factors affecting shelter residents, especially in terms of their mortality numbers.
 
+While many sociological studies have explored the growing number of shelter residents. For example, Maureen Crane and Louise Joly have studied the growing number of shelter residents and the issue of aging in Western countries (@Crane_Joly_2014). Similarly, in their article, John M. Quigley, Steven Raphael, and Eugene Smolensky pointed out that the number of shelter residents in the United States is increasing, along with the underlying causes contributing to this rise (@AmericanHomeless). Fewer have examined shelter resident mortality rates in detail. Given the challenges of accurately counting the transient and often untracked shelter population, studying actual death counts offers a more reliable and feasible method of understanding the impact of systemic issues. Mortality data, being both concrete and verifiable, can better inform policy decisions than estimates of shelter population numbers, which are often difficult to obtain and track (@LackAppraoch).
+
+This paper focuses on analyzing the number of deaths among shelter residents in Toronto from March 2007 to August 2024. The aim is to identify both long-term trends and seasonal variations in shelter resident deaths. Using simple linear regression, this study estimates the rate at which the number of deaths has increased over time. This project also examines anomalies in the data by comparing yearly death numbers, and assesses seasonal differences by analyzing average death rates across the four seasons. This analysis provides valuable insights into the hardships faced by shelter residents, especially during specific times of the year.
+
+This study finds three key trends: 1) the number of deaths among shelter residents in Toronto has been rising over time; 2) there was a noticeable increase in deaths between 2020 and 2023; and 3) while deaths during spring, summer, and fall remained relatively consistent, winter saw significantly higher mortality rates. Understanding these trends is critical because shelter resident deaths serve as a key indicator of broader social problems, such as gaps in welfare systems, housing shortages, and insufficient healthcare services. These findings provide essential data for governments and welfare organizations to develop more targeted interventions based on the needs of shelter residents throughout the year.
+
+The remainder of this paper is structured as follows: Section 2 discusses the data sources used in this project and details the data cleaning process, followed by a visualization of the dataset's key distribution and statistics. Section 3 outlines the statistical methods used and presents the findings in detail. Section 4 addresses the limitations of the study and offers suggestions for future research.
 
 # Data {#sec-data}
 
 ## Raw Data
 
-The dataset I am using is titled "Deaths of Shelter Residents", sourced from OpenToronto. This dataset records the number of deaths among shelter residents in the Toronto area, starting from January 2007 on a monthly basis. It also includes the gender of the deceased, categorized into three sections: male, female, and other gender, which includes Transgender, Non-binary, and Two-Spirit. The dataset is continuously updated. Table 1 contains descriptions of these variables.
+The dataset I am using is titled "Deaths of Shelter Residents", sourced from OpenToronto (@Opendatatoronto). This dataset records the number of deaths among shelter residents in the Toronto area, starting from January 2007 on a monthly basis. It also includes the gender of the deceased, categorized into three sections: male, female, and other gender, which includes Transgender, Non-binary, and Two-Spirit (@Opendatatoronto). The dataset is continuously updated. @tbl-column contains descriptions of these variables.
 
 ```{r}
 #| warning: false
 #| message: false
 #| echo: false
-#| label: Column descriptions of the original data
+#| label: tbl-column
 #| tbl-cap: "Column descriptions of the original data"
 
 column_description <- tibble(
@@ -62,48 +64,43 @@ kable(column_description, col.names = c("Column", "Description"))
 
 
 
-In addition to this dataset, OpenToronto also offers a similar dataset called "Deaths of People Experiencing Homelessness", which includes four variables: id, year, month, and number of deaths. However, I chose not to use this dataset due to its limited data coverage, spanning only from May 2007 to August 2023. In comparison, the "Deaths of Shelter Residents" dataset provides more extensive data, allowing for greater accuracy and a narrower confidence interval in the results.
+In addition to this dataset, OpenToronto also offers a similar dataset called "Deaths of People Experiencing Homelessness", which includes four variables: id, year, month, and number of deaths (@Opendatatoronto). However, I chose not to use this dataset due to its limited data coverage, spanning only from May 2007 to August 2023. In comparison, the "Deaths of Shelter Residents" dataset provides more extensive data, allowing for greater accuracy in the results.
 
 
 ## Data Cleaning
 
-In the data cleaning process, the following steps were conducted using Rcode(@citeR), along with the packages pandas, tidyverse, ggplot2, and dplyr:
+During the data processing phase, tasks such as downloading, cleaning, simulating, analyzing, and code testing were all performed using R code (@citeR). Additionally, the project utilized packages such as Tidyverse (@Tidyverse), Dplyr (@Dplyr), Lubridate (@Lubridate), and Knitr (@Knitr) for data handling. These tools were instrumental in performing linear regression, creating visualizations, generating tables, and formatting data for analysis.
 
-Combining Year and Month: The variables for year and month were merged, and the month was converted to a numerical format to facilitate time series analysis.
-Creating a New Variable for Seasons: A new variable was created to categorize each month into one of the four seasons: March, April, and May were classified as spring; June, July, and August as summer; September, October, and November as autumn; and December, January, and February as winter. This was done to enable seasonal analysis.
-Removing Unnecessary Variables: All variables unrelated to this project, such as id and the three gender categories, were removed to simplify the dataset.
-Ensuring Equal Seasonal Data: To ensure that each season had the same length of time for comparison, I removed some samples from the beginning and end of the dataset, so that the total number of samples became a multiple of four, with each season covering the same period.
-Handling Missing Data: After inspecting all the samples, I confirmed that there were no missing values, so no further treatment for missing data was necessary.
-After the cleaning process, the dataset was reduced to three variables: Time, Total Deaths, and Season, as shown in Table 2.
+The data cleaning process involved several key steps, each designed to improve the dataset's suitability for analysis. First, the year and month variables were combined, with the month converted to numerical format to facilitate time series analysis. A new variable was then created to classify each month into one of the four seasons: March, April, and May as spring; June, July, and August as summer; September, October, and November as autumn; and December, January, and February as winter, enabling seasonal analysis. To streamline the dataset, unnecessary variables, such as ID and the three gender categories, were removed. Additionally, to ensure that the seasonal analysis of average shelter resident deaths covered equal time intervals for each season, certain samples from the dataset's beginning and end were removed, resulting in a total number of samples divisible by four. Finally, after reviewing the dataset, it was confirmed that there were no missing values, so no further treatment was necessary. Upon completion, the cleaned dataset was reduced to three variables: Time, Total Deaths, and Season, as outlined in @tbl-sample.
 
 
 ```{r}
 #| warning: false
 #| message: false
 #| echo: false
-#| #| label: Sample of the cleaned data
+#| label: tbl-sample
 #| tbl-cap: "Sample of the cleaned data"
 kable(head(analysis_data))
 ```
 
 ## Statistical summary of the cleaned data
-Table 3 provides some basic statistics about the dataset. The project spans a total of 204 months. During this period, the highest number of deaths recorded in a single month was 19, while the lowest was 0. The average number of deaths per month is 3.848.
+@tbl-sumarry provides some basic statistics about the dataset. The project spans a total of 204 months. During this period, the highest number of deaths recorded in a single month was 19, while the lowest was 0. The average number of deaths per month is 3.848. Additionally, we can infer that the data is somewhat skewed, as the highest number of deaths in a single month is 19, while the average and median number of deaths are 3 and 3.83, respectively.
 ```{r}
 #| warning: false
 #| message: false
 #| echo: false
-#| label: Basic statistics of the cleaned data
+#| label: tbl-sumarry
 #| tbl-cap: "Basic statistics of the cleaned data"
 kable(summary(analysis_data[, c("year_month", "total_decedents")]))
 ```
 
-Figure 1 illustrates the variation in the number of deaths per month over time. It is clear that the trend is upward, indicating an increase in the number of deaths over the observed period.
+@fig-deathovertime depicts the monthly variation in the number of deaths over time. The overall trend reveals a significant increase in the total number of shelter resident deaths in Toronto, particularly after 2015. Prior to 2015, the number of deaths remained relatively stable, rarely exceeding 5 per month. However, from 2015 onwards, there is not only a noticeable upward trend in deaths but also increased volatility. Spikes in the data become more frequent, with several months recording over 10 deaths, and some months reaching as high as 15 or more.
 
 ```{r}
 #| warning: false
 #| message: false
 #| echo: false
-#| label: Total Decedents Over time
+#| label: fig-deathovertime
 #| fig-cap: "Total Decedents Over time"
 
 # Line plot for total_decedents over time
@@ -115,7 +112,6 @@ ggplot(analysis_data, aes(x = as.Date(paste(year_month, "-01", sep="")), y = tot
 
 # Result
 
-Figure 2 presents the fitted results of a simple linear regression model. The blue line represents the predicted data, while the points indicate the actual observed data. It is evident that the number of deaths shows a clear upward trend. The slope of the line suggests that the death count is increasing at an approximate rate of 1.009105 per week.
 
 
 
@@ -136,12 +132,12 @@ analysis_data$days_since_start <- as.numeric(difftime(analysis_data$year_month_d
 # 使用计算出的时间差进行回归分析
 m <- lm(total_decedents ~ days_since_start, data = analysis_data)
 ```
-
+I used the total number of shelter resident deaths per month as the target variable to be predicted, with time and season as predictors, and performed a linear regression analysis. Since time and season are evidently highly correlated, I decided to retain only time as the final predictor for the model. After completing the simple linear regression, I obtained a positive slope, represented by a straight line (@fig-slr), indicating that the number of shelter resident deaths in Toronto has increased over time. A comparison with the actual data revealed that the real values closely align with the predictions from the SLR model, demonstrating the reliability of my model.
 ```{r, results='hide'}
 #| warning: false
 #| message: false
 #| echo: false
-#| label: Simple linear regression
+#| label: fig-slr
 #| fig-cap: "Simple linear regression"
 
 
@@ -152,7 +148,10 @@ ggplot(analysis_data, aes(x = ym(year_month), y = total_decedents)) +
        x = "Time",
        y = "Total Decedents")
 ```
+
+####################
 Figure 3 displays the total number of deaths per year, along with their respective proportions. It is important to note that I removed the data for 2007 and 2024 because they do not represent complete years. From the chart, it is evident that the number of deaths between 2020 and 2023 was significantly higher, with each of these years accounting for over 10% of the total deaths during the 15-year period. The peak occurred in 2021, reaching as high as 17.8%.
+
 
 ```{r}
 #| warning: false
