@@ -8,6 +8,7 @@ abstract: "Shelter resident deaths are an important indicator of social stabilit
 format: pdf
 number-sections: true
 bibliography: references.bib
+
 ---
 
 ```{r}
@@ -19,7 +20,7 @@ bibliography: references.bib
 library(tidyverse)
 library(knitr)
 #### Read data ####
-analysis_data <- read_csv("/Users/fhw0912/Desktop/Deaths-of-Shelter-Residents-in-Toronto/data/analysis_data/analysis_data.csv")
+analysis_data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
 ```
 
 
@@ -33,7 +34,7 @@ This paper focuses on analyzing the number of deaths among shelter residents in 
 
 This study finds three key trends: 1) the number of deaths among shelter residents in Toronto has been rising over time; 2) there was a noticeable increase in deaths between 2020 and 2023; and 3) while deaths during spring, summer, and fall remained relatively consistent, winter saw significantly higher mortality rates. Understanding these trends is critical because shelter resident deaths serve as a key indicator of broader social problems, such as gaps in welfare systems, housing shortages, and insufficient healthcare services. These findings provide essential data for governments and welfare organizations to develop more targeted interventions based on the needs of shelter residents throughout the year.
 
-The remainder of this paper is structured as follows: Section 2 discusses the data sources used in this project and details the data cleaning process, followed by a visualization of the dataset's key distribution and statistics. Section 3 outlines the statistical methods used and presents the findings in detail. Section 4 addresses the limitations of the study and offers suggestions for future research.
+The remainder of this paper is structured as follows: @sec-data discusses the data sources used in this project and details the data cleaning process, followed by a visualization of the dataset's key distribution and statistics. @sec-result outlines the statistical methods used and presents the findings in detail. @sec-discussion addresses the limitations of the study and offers suggestions for future research.
 
 # Data {#sec-data}
 
@@ -118,7 +119,7 @@ ggplot(analysis_data, aes(x = as.Date(paste(year_month, "-01", sep="")), y = tot
   theme_minimal()
 ```
 
-# Result
+# Result {#sec-result}
 
 
 
@@ -221,7 +222,21 @@ ggplot(seasonal_data, aes(x = season, y = mean_decedents, fill = season)) +
 ```
 
 
-# Discussion
+# Discussion {#sec-discussion}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \newpage
 
 
