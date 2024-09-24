@@ -15,8 +15,10 @@ bibliography: references.bib
 #| warning: false
 #| message: false
 #| echo: false
+#### Workspace setup ####
 library(tidyverse)
 library(knitr)
+#### Read data ####
 analysis_data <- read_csv("/Users/fhw0912/Desktop/Deaths-of-Shelter-Residents-in-Toronto/data/analysis_data/analysis_data.csv")
 ```
 
@@ -46,6 +48,7 @@ The dataset I am using is titled "Deaths of Shelter Residents", sourced from Ope
 #| label: tbl-column
 #| tbl-cap: "Column descriptions of the original data"
 
+# Build a table to display columns and thier description.
 column_description <- tibble(
   Column = c("_id", "Year", "Month", "Total decedents", "Male", "Female", "Transgender/Non-binary/Two-Spirit"),
   Description = c(
@@ -59,6 +62,7 @@ column_description <- tibble(
   )
 )
 
+# Draw the table.
 kable(column_description, col.names = c("Column", "Description"))
 ```
 
@@ -80,6 +84,8 @@ The data cleaning process involved several key steps, each designed to improve t
 #| echo: false
 #| label: tbl-sample
 #| tbl-cap: "Sample of the cleaned data"
+
+# Display few of samples.
 kable(head(analysis_data))
 ```
 
@@ -91,6 +97,8 @@ kable(head(analysis_data))
 #| echo: false
 #| label: tbl-sumarry
 #| tbl-cap: "Basic statistics of the cleaned data"
+
+# Showing the summary of cleaned data.
 kable(summary(analysis_data[, c("year_month", "total_decedents")]))
 ```
 
@@ -120,16 +128,16 @@ ggplot(analysis_data, aes(x = as.Date(paste(year_month, "-01", sep="")), y = tot
 #| message: false
 #| echo: false
 #| include: false
-# 将 year_month 转换为日期格式，假设 year_month 是 YYYY-MM 格式的字符型
+# Convert year_month to a date format, assuming year_month is a character string in the format YYYY-MM
 analysis_data$year_month_date <- as.Date(paste0(analysis_data$year_month, "-01"))
 
-# 设置起始日期为 2007-01-01
+# Set the start date to 2007-01-01
 start_date <- as.Date("2007-01-01")
 
-# 计算每个日期与起始日期之间的时间差（以天为单位）
+# Calculate the time difference (in weeks) between each date and the start date
 analysis_data$days_since_start <- as.numeric(difftime(analysis_data$year_month_date, start_date, units = "weeks"))
 
-# 使用计算出的时间差进行回归分析
+# Perform a regression analysis using the calculated time difference
 m <- lm(total_decedents ~ days_since_start, data = analysis_data)
 ```
 I used the total number of shelter resident deaths per month as the target variable to be predicted, with time and season as predictors, and performed a linear regression analysis. Since time and season are evidently highly correlated, I decided to retain only time as the final predictor for the model. After completing the simple linear regression, I obtained a positive slope, represented by a straight line (@fig-slr), indicating that the number of shelter resident deaths in Toronto has increased over time. A comparison with the actual data revealed that the real values closely align with the predictions from the SLR model, demonstrating the reliability of my model.
@@ -140,73 +148,72 @@ I used the total number of shelter resident deaths per month as the target varia
 #| label: fig-slr
 #| fig-cap: "Simple linear regression"
 
-
+# Scatter plot and fitted line
 ggplot(analysis_data, aes(x = ym(year_month), y = total_decedents)) +
-  geom_point() +  # 绘制数据点
+  geom_point() +
   geom_line(aes(y = fitted(m)), col = "blue", size = 1)
   labs(title = "Total Decedents vs Year/Month",
        x = "Time",
        y = "Total Decedents")
 ```
 
-####################
-Figure 3 displays the total number of deaths per year, along with their respective proportions. It is important to note that I removed the data for 2007 and 2024 because they do not represent complete years. From the chart, it is evident that the number of deaths between 2020 and 2023 was significantly higher, with each of these years accounting for over 10% of the total deaths during the 15-year period. The peak occurred in 2021, reaching as high as 17.8%.
+
+@fig-yeardeath displays the total number of shelter resident deaths per year, along with their respective proportions. It is important to note that I excluded the data for 2007 and 2024, as these are incomplete years and including them could mislead the reader. From the chart, it is clear that the number of deaths between 2020 and 2023 was significantly higher, with each of these years accounting for over 10% of the total deaths during the 15-year period. The peak occurred in 2021, where the number of deaths exceeded 125, representing 17.8% of the total.
 
 
 ```{r}
 #| warning: false
 #| message: false
 #| echo: false
-#| label: Total Decedents per Year
+#| label: fig-yeardeath
 #| fig-cap: "Total Decedents per Year"
 
-# 将 year_month 转换为年份
+# Convert year_month to year
 analysis_data$year <- substr(analysis_data$year_month, 1, 4)
 
-# 按年份汇总总死亡人数
+# Aggregate total deaths by year
 yearly_deaths <- aggregate(total_decedents ~ year, data = analysis_data, sum)
 
-
-
-
+# Filter out data for the years 2007 and 2024
 filtered_data <- yearly_deaths[!(yearly_deaths$year %in% c(2007, 2024)), ]
 
-# 计算每年的总死亡人数占比（百分比）
+# Calculate the percentage of total deaths per year
 filtered_data$total_decedents_pct <- filtered_data$total_decedents / sum(filtered_data$total_decedents) * 100
 
-# 绘制带有百分比标签的柱状图
+# Create a bar chart with percentage labels
 ggplot(filtered_data, aes(x = year, y = total_decedents)) +
   geom_bar(stat = "identity", fill = "skyblue") +
   geom_text(aes(label = paste0(round(total_decedents_pct, 1), "%")), 
-            vjust = -0.5, size = 3) +  # 添加百分比标签
+            vjust = -0.5, size = 3) +  # Add percentage labels
   labs(title = "Total Decedents per Year", x = "Year", y = "Total Decedents") +
   theme_minimal()
 
 ```
 
 
-Additionally, Figure 4 shows the average number of deaths per season over the past few years. The proportions for spring, autumn, and summer are relatively similar, ranging between 23.6% and 23.8%. However, winter stands out with a significantly higher proportion, reaching 29%, notably surpassing the other three seasons.
+Additionally, @fig-seasondeath shows the average number of deaths per season over the past few years. The proportions for spring, autumn, and summer are relatively similar, ranging between 23.6% and 23.8%. However, winter stands out with a significantly higher proportion, reaching 29%, notably surpassing the other three seasons.
 
 ```{r}
 #| warning: false
 #| message: false
 #| echo: false
-#| label: Average Decedents by Season
+#| label: fig-seasondeath
 #| fig-cap: "Average Decedents by Season"
 
+# Grouping data by season
 seasonal_data <- analysis_data %>%
   group_by(season) %>%
   summarize(mean_decedents = mean(total_decedents),
             total_decedents = sum(total_decedents))
 
-# 计算每个季节的百分比
+# Calculate the percentage of total deaths for each season
 seasonal_data$total_decedents_pct <- seasonal_data$total_decedents / sum(seasonal_data$total_decedents) * 100
 
-# 绘制带有百分比的柱状图
+# Create a bar chart with percentage labels
 ggplot(seasonal_data, aes(x = season, y = mean_decedents, fill = season)) +
   geom_bar(stat = "identity") +
   geom_text(aes(label = paste0(round(total_decedents_pct, 1), "%")), 
-            vjust = -0.5, size = 3) +  # 添加百分比标签
+            vjust = -0.5, size = 3) +  # Add percentage labels
   labs(title = "Average Decedents by Season", 
        x = "Season", 
        y = "Average Decedents") +
