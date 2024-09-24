@@ -225,17 +225,11 @@ ggplot(seasonal_data, aes(x = season, y = mean_decedents, fill = season)) +
 # Discussion {#sec-discussion}
 
 
+## Limitations
+This study acknowledges several limitations. First, although the number of shelter resident deaths is more reliably recorded than the total shelter resident population, due to the unstructured nature of this group, the conclusions drawn about death trends may not fully reflect the challenges faced by the entire population. For instance, an increase in the total shelter population with a stable mortality rate would still result in a rise in deaths, which may not indicate worsening conditions. Second, the project utilizes a relatively small sample of data (204 months), and therefore, the results from the linear regression model may be subject to bias. However, this dataset represents the most comprehensive data available from government sources. Third, when analyzing seasonal variations, the sharp rise in death counts after 2020 introduces potential bias. It is possible that there were no seasonal differences before 2020, but new patterns emerged thereafter, which may have skewed the overall average and affected the seasonal analysis.
 
-
-
-
-
-
-
-
-
-
-
+## Suggestions for future research
+There are several avenues for future research that could build upon the findings of this study. First, as noted in the limitations, this research focuses on the number of shelter resident deaths, which may not fully reflect the conditions of the entire shelter population. Future studies examining the relationship between the total shelter population and the number of deaths could provide a more comprehensive understanding of the current situation. Second, while seasonal analysis in this study may have been influenced by recent years’ data, it is undeniable that shelter residents face heightened risks during the winter months at least in recent years. Research into the specific reasons behind increased winter threats, and an exploration of the actual needs of shelter residents during this period, would provide governments and welfare organizations with clearer insights to improve policies and intervention strategies. Finally, this research highlights the surge in death counts after 2020, but the underlying causes behind this spike should be further investigated by future scholars to prevent similar occurrences in the future.
 
 \newpage
 
