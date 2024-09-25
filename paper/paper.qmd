@@ -9,7 +9,7 @@ abstract: "Shelter resident deaths are an important indicator of social stabilit
 format: pdf
 number-sections: true
 bibliography: references.bib
-
+toc: true
 ---
 
 ```{r}
@@ -75,7 +75,7 @@ In addition to this dataset, OpenDataToronto also provides a similar dataset tit
 
 ## Data Cleaning
 
-During the data processing phase, tasks such as downloading, cleaning, simulating, analyzing, and code testing were all performed using R code (@citeR). Additionally, the project utilized packages such as Tidyverse (@Tidyverse), Dplyr (@Dplyr), Lubridate (@Lubridate), and Knitr (@Knitr) for data handling. These tools were instrumental in performing linear regression, creating visualizations, generating tables, and formatting data for analysis.
+During the data processing phase, tasks such as downloading, cleaning, simulating, analyzing, and code testing were all performed using R code (@citeR). Additionally, the project utilized packages such as Tidyverse (@Tidyverse), Styler (@Styler), Dplyr (@Dplyr), Lubridate (@Lubridate), and Knitr (@Knitr) for data handling. These tools were instrumental in performing linear regression, creating visualizations, generating tables, and formatting data for analysis.
 
 The data cleaning process involved several key steps, each designed to improve the dataset's suitability for analysis. First, the year and month variables were combined, with the month converted to numerical format to facilitate time series analysis. A new variable was then created to classify each month into one of the four seasons: March, April, and May as spring; June, July, and August as summer; September, October, and November as autumn; and December, January, and February as winter, enabling seasonal analysis. To streamline the dataset, unnecessary variables, such as ID and the three gender categories, were removed. Additionally, to ensure that the seasonal analysis of average shelter resident deaths covered equal time intervals for each season, certain samples from the dataset's beginning and end were removed, resulting in a total number of samples divisible by four. Finally, after reviewing the dataset, it was confirmed that there were no missing values, so no further treatment was necessary. Upon completion, the cleaned dataset was reduced to three variables: Time, Season, and Total Deaths, as few samples are outlined in @tbl-sample.
 
@@ -93,6 +93,9 @@ kable(head(analysis_data), col.names = c("Time", "Season", "Number of decedents"
 
 ## Statistical summary of the cleaned data
 @tbl-sumarry provides some basic statistics about the dataset. The project spans a total of 204 months. During this period, the highest number of deaths recorded in a single month was 19, while the lowest was 0. The average number of deaths per month is 3.848. Additionally, we can infer that the data is somewhat skewed, as the highest number of deaths in a single month is 19, while the average and median number of deaths are 3 and 3.83, respectively.
+
+\newpage
+
 ```{r}
 #| warning: false
 #| message: false
@@ -170,7 +173,7 @@ Additionally, collecting data on the deaths of shelter residents is more reliabl
 
 # Result {#sec-result}
 
-I used the total number of shelter resident deaths per month as the target variable to be predicted, with time and season as predictors, and performed a linear regression analysis. Since time and season are evidently highly correlated, I decided to retain only time as the final predictor for the model. After completing the simple linear regression, I obtained a positive slope, represented by a straight line (@fig-slr), indicating that the number of shelter resident deaths in Toronto has increased over time. A comparison with the actual data revealed that the real values closely align with the predictions from the SLR model, demonstrating the reliability of my model.
+I used the total number of shelter resident deaths per month as the target variable to be predicted, with time and season as predictors, and performed a linear regression analysis. Since time and season are evidently highly correlated, I decided to retain only time as the final predictor for the model. Additionally, since @fig-decedentdis showed that the total number of decedents follows a normal distribution, it satisfied the conditions for using simple linear regression. After completing the simple linear regression, I obtained a positive slope, represented by a straight line (@fig-slr), indicating that the number of shelter resident deaths in Toronto has increased over time. A comparison with the actual data revealed that the real values closely align with the predictions from the SLR model, demonstrating the reliability of my model.
 
 ```{r, results='hide', fig.pos="H"}
 #| warning: false
@@ -302,14 +305,6 @@ This study acknowledges several limitations. First, although the number of shelt
 There are several avenues for future research that could build upon the findings of this study. First, as noted in the limitations, this research focuses on the number of shelter resident deaths, which may not fully reflect the conditions of the entire shelter population. Future studies examining the relationship between the total shelter population and the number of deaths could provide a more comprehensive understanding of the current situation. Second, while seasonal analysis in this study may have been influenced by recent years’ data, it is undeniable that shelter residents face heightened risks during the winter months at least in recent years. Research into the specific reasons behind increased winter threats, and an exploration of the actual needs of shelter residents during this period, would provide governments and welfare organizations with clearer insights to improve policies and intervention strategies. Finally, this research highlights the surge in death counts after 2020, but the underlying causes behind this spike should be further investigated by future scholars to prevent similar occurrences in the future.
 
 \newpage
-
-
-
-\appendix
-
-# Appendix {-}
-\newpage
-
 
 # References
 

@@ -1,5 +1,5 @@
 #### Preamble ####
-# Purpose: Tests codes
+# Purpose: Tests codes.
 # Author: Haowei Fan
 # Date: 22 September 2024
 # Contact: haowei.fan@mail.utoronto.ca
