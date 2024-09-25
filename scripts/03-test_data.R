@@ -13,20 +13,20 @@ library(tidyverse)
 #### Test data ####
 
 # select target data
-data <- read_csv("data/analysis_data/simulated_data.csv")
+simulated_data <- read_csv("data/analysis_data/simulated_data.csv")
 
 # Test 1: Ensure year_month format is correct (YYYY-MM)
-all(grepl("^\\d{4}-\\d{2}$", data$year_month))
+all(grepl("^\\d{4}-\\d{2}$", simulated_data$year_month))
 
 
 # Test 2: Ensure year_month is in the right period.
-all(ym(data$year_month) >= ym("2007-03") 
-    & ym(data$year_month) <= ym("2024-02"))
+all(ym(simulated_data$year_month) >= ym("2007-03") 
+    & ym(simulated_data$year_month) <= ym("2024-02"))
 
 
 # Test 3: Ensure all seasons are assigned correctly
 valid_seasons <- c("Spring", "Summer", "Autumn", "Winter")
-all(data$season %in% valid_seasons)
+all(simulated_data$season %in% valid_seasons)
 
 
 # Test 4: the actual season matches the expected season
@@ -43,32 +43,33 @@ get_season <- function(month) {
   }
 }
 # Test to check if the 'season' column matches the correct season
-correct_season <- tibble(correct_season = sapply(data$month, get_season))
-all(correct_season$correct_season == data$season)
+month_from_data <- as.numeric(substr(simulated_data$year_month, 6, 7))
+correct_season <- tibble(correct_season = sapply(month_from_data, get_season))
+all(correct_season$correct_season == simulated_data$season)
 
 
 # Test 5: Check for valid total decedents
-all(data$total_decedents >= 0 & # is non-negative?
-      data$total_decedents == as.integer(data$total_decedents)) # is integer?
+all(simulated_data$total_decedents >= 0 & # is non-negative?
+      simulated_data$total_decedents == as.integer(simulated_data$total_decedents)) # is integer?
 
 # now I will test the actual data.
-data <- read_csv("data/analysis_data/analysis_data.csv")
+analysis_data <- read_csv("data/analysis_data/analysis_data.csv")
 
-# Test 7: Ensure year_month format is correct (YYYY-MM)
-all(grepl("^\\d{4}-\\d{2}$", data$year_month))
-
-
-# Test 8: Ensure year_month is in the right period.
-all(ym(data$year_month) >= ym("2007-03") 
-    & ym(data$year_month) <= ym("2024-02"))
+# Test 6: Ensure year_month format is correct (YYYY-MM)
+all(grepl("^\\d{4}-\\d{2}$", analysis_data$year_month))
 
 
-# Test 9: Ensure all seasons are assigned correctly
+# Test 7: Ensure year_month is in the right period.
+all(ym(analysis_data$year_month) >= ym("2007-03") 
+    & ym(analysis_data$year_month) <= ym("2024-02"))
+
+
+# Test 8: Ensure all seasons are assigned correctly
 valid_seasons <- c("Spring", "Summer", "Autumn", "Winter")
-all(data$season %in% valid_seasons)
+all(analysis_data$season %in% valid_seasons)
 
 
-# Test 10: the actual season matches the expected season
+# Test 9: the actual season matches the expected season
 # Function to determine the correct season based on the month
 get_season <- function(month) {
   if (month %in% 3:5) {
@@ -82,13 +83,14 @@ get_season <- function(month) {
   }
 }
 # Test to check if the 'season' column matches the correct season
-correct_season <- tibble(correct_season = sapply(data$month, get_season))
-all(correct_season$correct_season == data$season)
+month_from_data <- as.numeric(substr(analysis_data$year_month, 6, 7))
+correct_season <- tibble(correct_season = sapply(month_from_data, get_season))
+all(correct_season$correct_season == analysis_data$season)
 
 
-# Test 11: Check for valid total decedents
-all(data$total_decedents >= 0 & # is non-negative?
-      data$total_decedents == as.integer(data$total_decedents)) # is integer?
+# Test 10: Check for valid total decedents
+all(analysis_data$total_decedents >= 0 & # is non-negative?
+      analysis_data$total_decedents == as.integer(analysis_data$total_decedents)) # is integer?
 
 
 

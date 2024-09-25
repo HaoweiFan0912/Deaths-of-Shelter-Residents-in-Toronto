@@ -31,7 +31,5 @@ cleaned_data <-
   filter(ym(year_month) >= ym("2007-03") & ym(year_month) <= ym("2024-02")) |> # delete unwanted rows.
   tidyr::drop_na() # drop rows contains empty unit.
 
-  
-cleaned_data
 #### Save data ####
 write_csv(cleaned_data, "data/analysis_data/analysis_data.csv")
