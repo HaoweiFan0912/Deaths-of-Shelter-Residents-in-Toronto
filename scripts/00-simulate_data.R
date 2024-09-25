@@ -27,7 +27,7 @@ months <- seq(1, 12)
 seasons <- rep(c("spring", "summer", "autumn", "winter"))
 
 # I assume the number of decedents follows poisson distribution with mean of 8.
-total_decedents <- rpois(length(years)*12, 8)
+total_decedents <- rpois(length(years) * 12, 8)
 
 # Begin to simulate data
 simulated_data <-
@@ -37,7 +37,7 @@ simulated_data <-
     total_decedents = total_decedents
   )
 
-# Add another column to the data called season. 
+# Add another column to the data called season.
 # When month is "Mar", "Apr", or "May", season is Spring.
 # When month is "Jun", "Jul", or "Aug", season is Summer.
 # When month is "Sep", "Oct", or "Nov", season is Autumn.
@@ -47,7 +47,7 @@ simulated_data <- simulated_data %>%
     month %in% c(3, 4, 5) ~ "Spring",
     month %in% c(6, 7, 8) ~ "Summer",
     month %in% c(9, 10, 11) ~ "Autumn",
-    month %in% c(12, 1, 2 ) ~ "Winter"
+    month %in% c(12, 1, 2) ~ "Winter"
   ))
 
 # Format the year_month column.
@@ -61,7 +61,7 @@ simulated_data <- simulated_data %>%
 # Convert year_month to a date using ym (lubridate package)
 simulated_data <- simulated_data %>%
   mutate(year_month = ym(year_month))
-  
+
 # I am only interested in the period from 2007-3 to 2024-2.
 simulated_data <- simulated_data %>%
   filter(year_month >= ym("2007-03") & year_month <= ym("2024-02")) %>%

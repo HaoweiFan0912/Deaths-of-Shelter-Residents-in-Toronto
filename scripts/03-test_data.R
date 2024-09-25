@@ -20,8 +20,8 @@ all(grepl("^\\d{4}-\\d{2}$", simulated_data$year_month))
 
 
 # Test 2: Ensure year_month is in the right period.
-all(ym(simulated_data$year_month) >= ym("2007-03") 
-    & ym(simulated_data$year_month) <= ym("2024-02"))
+all(ym(simulated_data$year_month) >= ym("2007-03") &
+  ym(simulated_data$year_month) <= ym("2024-02"))
 
 
 # Test 3: Ensure all seasons are assigned correctly
@@ -50,7 +50,7 @@ all(correct_season$correct_season == simulated_data$season)
 
 # Test 5: Check for valid total decedents
 all(simulated_data$total_decedents >= 0 & # is non-negative?
-      simulated_data$total_decedents == as.integer(simulated_data$total_decedents)) # is integer?
+  simulated_data$total_decedents == as.integer(simulated_data$total_decedents)) # is integer?
 
 # now I will test the actual data.
 analysis_data <- read_csv("data/analysis_data/analysis_data.csv")
@@ -60,8 +60,8 @@ all(grepl("^\\d{4}-\\d{2}$", analysis_data$year_month))
 
 
 # Test 7: Ensure year_month is in the right period.
-all(ym(analysis_data$year_month) >= ym("2007-03") 
-    & ym(analysis_data$year_month) <= ym("2024-02"))
+all(ym(analysis_data$year_month) >= ym("2007-03") &
+  ym(analysis_data$year_month) <= ym("2024-02"))
 
 
 # Test 8: Ensure all seasons are assigned correctly
@@ -90,8 +90,4 @@ all(correct_season$correct_season == analysis_data$season)
 
 # Test 10: Check for valid total decedents
 all(analysis_data$total_decedents >= 0 & # is non-negative?
-      analysis_data$total_decedents == as.integer(analysis_data$total_decedents)) # is integer?
-
-
-
-
+  analysis_data$total_decedents == as.integer(analysis_data$total_decedents)) # is integer?

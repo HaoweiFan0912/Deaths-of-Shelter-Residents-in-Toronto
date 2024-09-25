@@ -17,9 +17,11 @@ cleaned_data <-
   raw_data |>
   janitor::clean_names() |> # format column names
   select(-x_id, -transgender_non_binary_two_spirit, -male, -female) |> # delete unless columns
-  mutate(month_numeric = sprintf("%02d", match(month, month.abb)),  # Convert month abbreviation to numeric
-         year_month = paste(year, month_numeric, sep = "-")) %>% # New column contains year and month in the format XXXX_XX
-  select(-year, -month) |>   # Keep only the new 'year_month' column
+  mutate(
+    month_numeric = sprintf("%02d", match(month, month.abb)), # Convert month abbreviation to numeric
+    year_month = paste(year, month_numeric, sep = "-")
+  ) %>% # New column contains year and month in the format XXXX_XX
+  select(-year, -month) |> # Keep only the new 'year_month' column
   mutate(season = case_when(
     month_numeric %in% c("03", "04", "05") ~ "Spring", # match months to actual season
     month_numeric %in% c("06", "07", "08") ~ "Summer",

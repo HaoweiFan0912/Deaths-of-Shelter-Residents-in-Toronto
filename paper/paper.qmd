@@ -102,7 +102,8 @@ kable(head(analysis_data), col.names = c("Time", "Season", "Number of decedents"
 
 # Showing the summary of cleaned data.
 kable(summary(analysis_data[, c("year_month", "total_decedents")]),
-      col.names = c("Time", "Number of decedents"))
+  col.names = c("Time", "Number of decedents")
+)
 ```
 
 @fig-decedentdis illustrates the distribution of monthly shelter resident deaths, showing a left-skewed normal distribution. This indicates that the majority of months have a death count in the range of 0-5. Additionally, there are two outliers, where the death count exceeds 15 in two months, which is an uncommon occurrence.
@@ -118,15 +119,15 @@ kable(summary(analysis_data[, c("year_month", "total_decedents")]),
 ggplot(analysis_data, aes(x = total_decedents)) +
   geom_histogram(binwidth = 1, fill = "steelblue", color = "black", alpha = 0.7) +
   labs(title = "Distribution of monthly number of decedents", x = "Number of decedents", y = "Frequency") +
-  theme_minimal()+
+  theme_minimal() +
   theme(
-    panel.grid.major = element_line(color = "gray80"),  
-    panel.grid.minor = element_blank(),  
-    plot.title = element_text(hjust = 0.5, size = 12),  
-    axis.title.x = element_text(size = 12), 
+    panel.grid.major = element_line(color = "gray80"),
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(hjust = 0.5, size = 12),
+    axis.title.x = element_text(size = 12),
     axis.title.y = element_text(size = 12),
-    axis.text.x = element_text(hjust = 0.5,  size = 10),
-    axis.text.y = element_text(hjust = 0,  size = 10),
+    axis.text.x = element_text(hjust = 0.5, size = 10),
+    axis.text.y = element_text(hjust = 0, size = 10),
   )
 ```
 
@@ -140,21 +141,23 @@ ggplot(analysis_data, aes(x = total_decedents)) +
 #| fig-cap: "Number of decedents over time"
 
 # plot an graph for the trend of number of decedents over time.
-ggplot(analysis_data, aes(x = as.Date(paste(year_month, "-01", sep="")), y = total_decedents)) +
-  geom_line(color = "steelblue", size = 0.7) +  
-  labs(title = "Number of decedents over time", 
-       x = "Time", 
-       y = "Number of decedents") +
-  scale_x_date(date_labels = "%Y", date_breaks = "2 years") +  
-  theme_minimal(base_size = 15) +  
+ggplot(analysis_data, aes(x = as.Date(paste(year_month, "-01", sep = "")), y = total_decedents)) +
+  geom_line(color = "steelblue", size = 0.7) +
+  labs(
+    title = "Number of decedents over time",
+    x = "Time",
+    y = "Number of decedents"
+  ) +
+  scale_x_date(date_labels = "%Y", date_breaks = "2 years") +
+  theme_minimal(base_size = 15) +
   theme(
-    panel.grid.major = element_line(color = "gray80"),  
-    panel.grid.minor = element_blank(),  
-    plot.title = element_text(hjust = 0.5, size = 12),  
-    axis.title.x = element_text(size = 12), 
+    panel.grid.major = element_line(color = "gray80"),
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(hjust = 0.5, size = 12),
+    axis.title.x = element_text(size = 12),
     axis.title.y = element_text(size = 12),
-    axis.text.x = element_text(angle = 30, hjust = 0.5,  size = 10),
-    axis.text.y = element_text(hjust = 0,  size = 10),
+    axis.text.x = element_text(angle = 30, hjust = 0.5, size = 10),
+    axis.text.y = element_text(hjust = 0, size = 10),
   )
 ```
 ## Discussion of measurement
@@ -180,17 +183,19 @@ I used the total number of shelter resident deaths per month as the target varia
 ggplot(analysis_data, aes(x = ym(year_month), y = total_decedents)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) +
-  labs(title = "Simple linear regression of number of decedent by time",
-       x = "Time",
-       y = "Number of Decedents") +
+  labs(
+    title = "Simple linear regression of number of decedent by time",
+    x = "Time",
+    y = "Number of Decedents"
+  ) +
   theme(
-    panel.grid.major = element_line(color = "gray80"),  
-    panel.grid.minor = element_blank(),  
-    plot.title = element_text(hjust = 0.5, size = 12),  
-    axis.title.x = element_text(size = 12), 
+    panel.grid.major = element_line(color = "gray80"),
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(hjust = 0.5, size = 12),
+    axis.title.x = element_text(size = 12),
     axis.title.y = element_text(size = 12),
-    axis.text.x = element_text(hjust = 0.5,  size = 10),
-    axis.text.y = element_text(hjust = 0,  size = 10),
+    axis.text.x = element_text(hjust = 0.5, size = 10),
+    axis.text.y = element_text(hjust = 0, size = 10),
   )
 ```
 
@@ -220,20 +225,20 @@ filtered_data$total_decedents_pct <- filtered_data$total_decedents / sum(filtere
 # Create a bar chart with percentage labels
 ggplot(filtered_data, aes(x = year, y = total_decedents)) +
   geom_bar(stat = "identity", fill = "skyblue") +
-  geom_text(aes(label = paste0(round(total_decedents_pct, 1), "%")), 
-            vjust = -0.5, size = 2.3) +  # Add percentage labels
+  geom_text(aes(label = paste0(round(total_decedents_pct, 1), "%")),
+    vjust = -0.5, size = 2.3
+  ) + # Add percentage labels
   labs(title = "Number of decedents per year", x = "Year", y = "Number of decedents") +
-  theme_minimal()+
+  theme_minimal() +
   theme(
-    panel.grid.major = element_line(color = "gray80"),  
-    panel.grid.minor = element_blank(),  
-    plot.title = element_text(hjust = 0.5, size = 12),  
-    axis.title.x = element_text(size = 12), 
+    panel.grid.major = element_line(color = "gray80"),
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(hjust = 0.5, size = 12),
+    axis.title.x = element_text(size = 12),
     axis.title.y = element_text(size = 12),
-    axis.text.x = element_text(angle = 30, hjust = 0.5,  size = 10),
-    axis.text.y = element_text(hjust = 0,  size = 10),
-    
-)
+    axis.text.x = element_text(angle = 30, hjust = 0.5, size = 10),
+    axis.text.y = element_text(hjust = 0, size = 10),
+  )
 ```
 
 
@@ -250,8 +255,10 @@ Additionally, @fig-seasondeath shows the average number of deaths per season ove
 # Grouping data by season
 seasonal_data <- analysis_data %>%
   group_by(season) %>%
-  summarize(mean_decedents = mean(total_decedents),
-            total_decedents = sum(total_decedents))
+  summarize(
+    mean_decedents = mean(total_decedents),
+    total_decedents = sum(total_decedents)
+  )
 
 # Calculate the percentage of total deaths for each season
 seasonal_data$total_decedents_pct <- seasonal_data$total_decedents / sum(seasonal_data$total_decedents) * 100
@@ -264,20 +271,23 @@ seasonal_data_sorted <- seasonal_data %>% arrange(season)
 # Create a bar chart with percentage labels
 ggplot(seasonal_data, aes(x = season, y = mean_decedents, fill = season)) +
   geom_bar(stat = "identity") +
-  geom_text(aes(label = paste0(round(total_decedents_pct, 1), "%")), 
-            vjust = -0.5, size = 2.5) +  # Add percentage labels
-  labs(title = "Average number of decedents per season", 
-       x = "Season", 
-       y = "Average number of decedents") +
+  geom_text(aes(label = paste0(round(total_decedents_pct, 1), "%")),
+    vjust = -0.5, size = 2.5
+  ) + # Add percentage labels
+  labs(
+    title = "Average number of decedents per season",
+    x = "Season",
+    y = "Average number of decedents"
+  ) +
   theme_minimal() +
   theme(
-    panel.grid.major = element_line(color = "gray80"),  
-    panel.grid.minor = element_blank(),  
-    plot.title = element_text(hjust = 0.5, size = 12),  
-    axis.title.x = element_text(size = 12), 
+    panel.grid.major = element_line(color = "gray80"),
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(hjust = 0.5, size = 12),
+    axis.title.x = element_text(size = 12),
     axis.title.y = element_text(size = 12),
-    axis.text.x = element_text(hjust = 0.5,  size = 10),
-    axis.text.y = element_text(hjust = 0,  size = 10),
+    axis.text.x = element_text(hjust = 0.5, size = 10),
+    axis.text.y = element_text(hjust = 0, size = 10),
   )
 ```
 
