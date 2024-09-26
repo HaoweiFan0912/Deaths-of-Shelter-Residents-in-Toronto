@@ -25,6 +25,6 @@ This project utilized ChatGPT-4 to assist in completing part of the code and wri
 3. Asked ChatGPT for guidance on using Styler for code formatting.
 
 The full chat histories are documented in:
-1. other/llm/01-Graphing.txt.
-2. other/llm/02-Writing.txt.
-3. other/llm/03-Formatting.txt.
+1. `other/llm/01-Graphing.txt`.
+2. `other/llm/02-Writing.txt`.
+3. `other/llm/03-Formatting.txt`.
