@@ -19,9 +19,12 @@ The repo is structured as:
 
 
 ## Statement on LLM usage
-This project utilized ChatGPT-4 to assist in completing part of the code and writing for the Paper.qmd file. The main uses were as follows:
+This project utilized ChatGPT-4 to assist in completing part of the code and writing for the paper.qmd file. The main uses were as follows:
 1. Consulted ChatGPT-4 on how to use the ggplot2 package and obtained code. Although the provided code wasn't fully copied, it served as a template.
 2. Used ChatGPT for translation. The translations were limited to words and phrases.
 3. Asked ChatGPT for guidance on using Styler for code formatting.
 
-The full chat history is documented in other/llm.
+The full chat histories are documented in:
+1. other/llm/01-Graphing.txt.
+2. other/llm/02-Writing.txt.
+3. other/llm/03-Formatting.txt.
