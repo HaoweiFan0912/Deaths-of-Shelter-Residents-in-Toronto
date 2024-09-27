@@ -4,7 +4,7 @@
 # Date: 21 September 2024
 # Contact: haowei.fan@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: None
+# Pre-requisites: Being able to access the web: https://open.toronto.ca/dataset/deaths-of-shelter-residents/.
 # Any other information needed? None
 
 

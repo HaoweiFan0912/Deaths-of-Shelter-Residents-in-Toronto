@@ -4,7 +4,7 @@
 # Date: 21 September 2024
 # Contact: haowei.fan@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: None
+# Pre-requisites: Understanding the type of data needed for this project.
 # Any other information needed? None
 
 #### Workspace setup ####

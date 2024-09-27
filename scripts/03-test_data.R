@@ -4,7 +4,7 @@
 # Date: 22 September 2024
 # Contact: haowei.fan@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: None
+# Pre-requisites: Both simulated data and actual raw data are saved in the project folder.
 # Any other information needed? None
 
 #### Workspace setup ####
